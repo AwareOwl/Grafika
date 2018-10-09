@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour {
 
-
-    public Vector3 StartingPosition;
-    public Vector3 EndingPosition;
+    
 
     public GameObject Clone;
+
+    static public bool MoveMode = false;
     
 
     // Use this for initialization
@@ -18,26 +18,21 @@ public class Controller : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetMouseButtonDown (0)) {
-            StartingPosition = Input.mousePosition;
-            CreateQuad ();
-        }
-        if (Input.GetMouseButton (0)) {
-            RefreshEndingPosition ();
+        if (!MoveMode) {
+            if (Input.GetMouseButtonDown (0)) {
+                CreateQuad ();
+            }
         }
         if (Input.GetMouseButtonUp (0)) {
-            RefreshEndingPosition ();
+            MoveMode = true;
         }
-    }
-
-    public void RefreshEndingPosition () {
-        EndingPosition = Input.mousePosition;
-        Clone.GetComponent <UIController>().SetQuadTransform (StartingPosition, EndingPosition);
     }
 
     public void CreateQuad () {
         float minF = 0.7f;
         Clone = GameObject.CreatePrimitive (PrimitiveType.Quad);
+        Clone.GetComponent<Renderer> ().material.shader = Shader.Find ("Sprites/Default");
+        //Clone.GetComponent<Renderer> ().material.mainTexture = Resources.Load ("Textures/Circle2") as Texture;
         Clone.GetComponent<Renderer> ().material.color = new Color (Random.Range (minF, 1), Random.Range (minF, 1), Random.Range (minF, 1));
         Clone.AddComponent<UIController> ();
     }
