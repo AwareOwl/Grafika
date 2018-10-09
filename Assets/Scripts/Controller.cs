@@ -32,18 +32,13 @@ public class Controller : MonoBehaviour {
 
     public void RefreshEndingPosition () {
         EndingPosition = Input.mousePosition;
-        SetQuadTransform ();
+        Clone.GetComponent <UIController>().SetQuadTransform (StartingPosition, EndingPosition);
     }
 
     public void CreateQuad () {
+        float minF = 0.7f;
         Clone = GameObject.CreatePrimitive (PrimitiveType.Quad);
-    }
-
-    public void SetQuadTransform () {
-        Vector3 sPos = StartingPosition / Screen.height;
-        Vector3 ePos = EndingPosition / Screen.height;
-        Vector3 dPos = ePos - sPos;
-        Clone.transform.localScale = new Vector3 (Mathf.Abs (dPos.x), Mathf.Abs (dPos.y), 1);
-        Clone.transform.localPosition = (sPos + ePos) / 2;
+        Clone.GetComponent<Renderer> ().material.color = new Color (Random.Range (minF, 1), Random.Range (minF, 1), Random.Range (minF, 1));
+        Clone.AddComponent<UIController> ();
     }
 }
